@@ -35,8 +35,8 @@ resource "azurerm_resource_group" "rg-ak2s2" {
 # Sample NSG designed to raise a security alert. Delete for any real deployment.
 resource "azurerm_network_security_group" "nsg-fail" {
   name                = "insecureNSG"
-  location            = azurerm_resource_group.rg-aks.location
-  resource_group_name = azurerm_resource_group.rg-aks.name
+  location            = azurerm_resource_group.rg-aks2.location
+  resource_group_name = azurerm_resource_group.rg-aks2.name
 
   security_rule {
     name                       = "badrule"
