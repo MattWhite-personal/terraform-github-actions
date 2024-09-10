@@ -7,7 +7,7 @@ resource "azurerm_dns_zone" "tftest-mjw" {
   tags = local.tags
 }
 
-module "bs-co-records" {
+module "tftest-records" {
   source    = "./module/dnsrecords"
   zone_name = azurerm_dns_zone.tftest-mjw.name
   rg_name   = azurerm_resource_group.dnszones.name
@@ -111,7 +111,6 @@ module "bs-co-records" {
   ]
 }
 
-/*
 module "tftest-mjw-mtasts" {
   source                   = "./module/mtasts"
   use-existing-cdn-profile = true
@@ -127,4 +126,3 @@ module "tftest-mjw-mtasts" {
   tags                     = local.tags
   permitted-ips            = local.permitted_ips
 }
-*/
