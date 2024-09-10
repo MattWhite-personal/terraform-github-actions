@@ -33,6 +33,10 @@ resource "azurerm_storage_account" "stmtasts" {
       days = 7
     }
   }
+  sas_policy {
+    expiration_action = "Log"
+    expiration_period = "30.0:0:0"
+  }
 }
 
 resource "azurerm_storage_blob" "mta-sts" {
