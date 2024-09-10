@@ -9,7 +9,7 @@ resource "azurerm_storage_account" "stmtasts" {
   name                            = "st${local.storage_prefix}mtasts"
   resource_group_name             = var.stg-resource-group
   location                        = var.location
-  account_replication_type        = "LRS"
+  account_replication_type        = "GRS"
   account_tier                    = "Standard"
   min_tls_version                 = "TLS1_2"
   account_kind                    = "StorageV2"
