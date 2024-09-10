@@ -35,7 +35,7 @@ resource "azurerm_storage_account" "stmtasts" {
   }
   sas_policy {
     expiration_action = "Log"
-    expiration_period = "30.0:0:0"
+    expiration_period = "30.00:00:00"
   }
 }
 
