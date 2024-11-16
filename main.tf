@@ -130,6 +130,15 @@ resource "azurerm_resource_group" "cdnprofiles" {
   }
 }
 
+resource "azurerm_resource_group" "other-stuff" {
+  name     = "RG-WhiteFam-UKS"
+  location = "UK South"
+  tags     = local.tags
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "azurerm_cdn_profile" "cdn-mta-sts" {
   name                = "cdn-mjwmtasts"
   location            = "global"
