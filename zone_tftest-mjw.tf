@@ -122,7 +122,7 @@ module "tftest-mjw-mtasts" {
   depends_on               = [azurerm_resource_group.cdnprofiles, azurerm_resource_group.dnszones]
   reporting-email          = "tls-reports@matthewjwhite.co.uk"
   stg-resource-group       = "RG-WhiteFam-UKS"
-  resource-prefix          = "bsco"
+  resource-prefix          = "mwtftest"
   tags                     = local.tags
   permitted-ips            = local.permitted_ips
 }
