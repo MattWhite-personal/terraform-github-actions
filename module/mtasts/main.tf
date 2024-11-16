@@ -24,8 +24,8 @@ resource "azurerm_storage_account" "stmtasts" {
   }
   network_rules {
     default_action = "Allow"
-  #  bypass         = ["AzureServices"]
-  #  ip_rules       = var.permitted-ips
+    #  bypass         = ["AzureServices"]
+    #  ip_rules       = var.permitted-ips
   }
   blob_properties {
     delete_retention_policy {
