@@ -1,5 +1,5 @@
 resource "azurerm_static_web_app" "matthewjwhite-dev" {
-  name                = "matthewjwhite-dev"
+  name                = "matthewjwhite-dev2"
   resource_group_name = azurerm_resource_group.other-stuff.name
   location            = "westeurope"
   sku_size            = "Standard"
