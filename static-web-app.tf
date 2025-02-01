@@ -5,7 +5,7 @@ resource "azurerm_static_web_app" "matthewjwhite-dev" {
   sku_size            = "Standard"
   sku_tier            = "Standard"
   tags                = local.tags
-  repository_url      = "https://github.com/MattWhite-personal/matthewjwhite.co.uk"
+  repository_url      = "https://github.com/MattWhite-personal/terraform-github-actions"
   repository_branch   = "main"
   repository_token    = var.azure_swa_pat
 }
