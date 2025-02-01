@@ -36,5 +36,5 @@ variable "storage_account" {
 variable "azure_swa_pat" {
   type        = string
   description = "Personal Access Token for GitHub repository"
-  sensitive = true
+  sensitive   = true
 }
