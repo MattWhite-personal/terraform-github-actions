@@ -33,3 +33,8 @@ variable "storage_account" {
 #  description = "List of IPs that can access storage accounts"
 #  sensitive   = false
 #}
+variable "azure_swa_pat" {
+  type        = string
+  description = "Personal Access Token for GitHub repository"
+  sensitive   = true
+}
