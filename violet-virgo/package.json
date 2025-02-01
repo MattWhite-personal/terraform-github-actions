@@ -1,0 +1,17 @@
+{
+  "name": "violet-virgo",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/preact": "^4.0.2",
+    "@astrojs/rss": "^4.0.11",
+    "astro": "^5.1.7",
+    "preact": "^10.25.4"
+  }
+}
