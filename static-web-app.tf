@@ -5,6 +5,14 @@ resource "azurerm_static_web_app" "matthewjwhite-dev" {
   sku_size            = "Free"
   sku_tier            = "Free"
   tags                = local.tags
+
+  lifecycle {
+    ignore_changes = [
+      repository_branch,
+      repository_url,
+      repostiroty_token
+    ]
+  }
 }
 
 #resource "azurerm_static_web_app_custom_domain" "matthewjwhite-dev" {
