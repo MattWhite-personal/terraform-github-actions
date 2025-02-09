@@ -10,7 +10,7 @@ resource "azurerm_static_web_app" "matthewjwhite-dev" {
     ignore_changes = [
       repository_branch,
       repository_url,
-      repostiroty_token
+      repository_token
     ]
   }
 }
