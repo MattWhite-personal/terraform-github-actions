@@ -47,7 +47,7 @@ jobs:
     
     # Perform Trivy code scan not checkov
     - name: Run Trivy vulnerability scanner in repo mode
-      uses: aquasecurity/trivy-action@0.28.0
+      uses: aquasecurity/trivy-action@0.29.0
       with:
         scan-type: 'config'
         ignore-unfixed: true
