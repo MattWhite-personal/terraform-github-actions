@@ -14,9 +14,9 @@ module "tftest-records" {
   tags      = local.tags
   a-records = [
     {
-      name = "@",
+      name       = "@",
       resourceID = azurerm_static_web_app.matthewjwhite-dev.id
-      isAlias = true
+      isAlias    = true
     }
   ]
   aaaa-records = []
