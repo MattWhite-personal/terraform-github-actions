@@ -73,11 +73,6 @@ module "tftest-records" {
       name    = "selector2._domainkey",
       record  = "selector2-tftest-mjw._domainkey.objectatelier.onmicrosoft.com",
       isAlias = false
-    },
-    {
-      name    = "www",
-      record  = "ext-cust.squarespace.com",
-      isAlias = false
     }
   ]
   mx-records = [
