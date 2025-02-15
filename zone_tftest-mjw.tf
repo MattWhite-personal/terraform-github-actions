@@ -15,13 +15,8 @@ module "tftest-records" {
   a-records = [
     {
       name = "@",
-      records = [
-        "198.185.159.144",
-        "198.185.159.145",
-        "198.49.23.144",
-        "198.49.23.145"
-      ],
-      isAlias = false
+      resourceID = azurerm_static_web_app.matthewjwhite-dev.id
+      isAlias = true
     }
   ]
   aaaa-records = []
