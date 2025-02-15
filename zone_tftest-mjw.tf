@@ -14,14 +14,9 @@ module "tftest-records" {
   tags      = local.tags
   a-records = [
     {
-      name = "@",
-      records = [
-        "198.185.159.144",
-        "198.185.159.145",
-        "198.49.23.144",
-        "198.49.23.145"
-      ],
-      isAlias = false
+      name       = "@",
+      resourceID = azurerm_static_web_app.matthewjwhite-dev.id
+      isAlias    = true
     }
   ]
   aaaa-records = []
@@ -77,11 +72,6 @@ module "tftest-records" {
     {
       name    = "selector2._domainkey",
       record  = "selector2-tftest-mjw._domainkey.objectatelier.onmicrosoft.com",
-      isAlias = false
-    },
-    {
-      name    = "www",
-      record  = "ext-cust.squarespace.com",
       isAlias = false
     }
   ]
