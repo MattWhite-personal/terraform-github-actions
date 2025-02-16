@@ -15,8 +15,8 @@ resource "azurerm_static_web_app" "matthewjwhite-dev" {
   }
 }
 
-#resource "azurerm_static_web_app_custom_domain" "matthewjwhite-dev" {
-#  static_web_app_id = azurerm_static_web_app.matthewjwhite-dev.id
-#  domain_name       = "dev.matthewjwhite.co.uk"
-#  validation_type   = "cname-delegation"
-#}
+resource "azurerm_static_web_app_custom_domain" "matthewjwhite-dev" {
+  static_web_app_id = azurerm_static_web_app.matthewjwhite-dev.id
+  domain_name       = "tfttest.matthewjwhite.co.uk"
+  validation_type   = "dns-txt-token"
+}
