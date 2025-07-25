@@ -122,7 +122,7 @@ jobs:
         
      # Upload results to GitHub Advanced Security
     - name: Upload SARIF file
-      if: steps.fmt_check.outcome == 'success'
+      if: success() || failure()
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: results.sarif
