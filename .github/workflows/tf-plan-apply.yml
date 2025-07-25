@@ -133,7 +133,13 @@ jobs:
     needs: [terraform-plan]
     
     steps:
-    # Checkout the repository to the GitHub Actions runner
+    - name: Get GitHub Actions Runner IP
+      id: get-runner-ip
+      run: |
+          IP=$(curl -s https://api.ipify.org)
+          echo "Runner IP: $IP"
+    
+      # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
 
