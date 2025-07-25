@@ -10,7 +10,7 @@ locals {
   }
   front-door-id = var.use-existing-front-door ? data.azurerm_cdn_frontdoor_profile.afd[0].id : azurerm_cdn_frontdoor_profile.mta-sts[0].id
   afd-ip-ranges = flatten([
-    for cidr in data.azurerm_network_service_tags.AzureFrontDoor-BackEnd.ipv4_cidrs : (
+    for cidr in concat(data.azurerm_network_service_tags.AzureFrontDoor-BackEnd.ipv4_cidrs, [var.runner-ip]) : (
       tonumber(split("/", cidr)[1]) >= 31 ?
       [
         for i in range(

@@ -38,3 +38,9 @@ variable "azure_swa_pat" {
   description = "Personal Access Token for GitHub repository"
   sensitive   = true
 }
+
+variable "runner-ip" {
+  type        = string
+  description = "IP address of the GitHub Actions runner"
+  sensitive   = true
+}

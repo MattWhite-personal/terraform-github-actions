@@ -117,4 +117,5 @@ module "tftest-mjw-mtasts" {
   resource-prefix         = "mwtftest"
   tags                    = local.tags
   permitted-ips           = local.permitted_ips
+  runner-ip               = var.runner-ip
 }

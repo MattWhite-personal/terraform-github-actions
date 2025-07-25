@@ -74,3 +74,9 @@ variable "permitted-ips" {
   sensitive   = false
   type        = list(string)
 }
+
+variable "runner-ip" {
+  description = "IP address of the GitHub Actions runner"
+  sensitive   = true
+  type        = string
+}
