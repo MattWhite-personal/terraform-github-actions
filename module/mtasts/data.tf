@@ -13,7 +13,7 @@ data "azurerm_resource_group" "afd" {
 
 # Get the resource group for DNS records
 data "azurerm_resource_group" "dns" {
-  name  = var.dns-resource-group
+  name = var.dns-resource-group
 }
 
 # Ensure the DNS zone exists
@@ -24,7 +24,7 @@ data "azurerm_dns_zone" "zone" {
 
 # If using an existing Front Door, get the Front Door profile
 data "azurerm_cdn_frontdoor_profile" "afd" {
-  count = var.use-existing-front-door ? 1 : 0
-  name  = var.existing-front-door
+  count               = var.use-existing-front-door ? 1 : 0
+  name                = var.existing-front-door
   resource_group_name = data.azurerm_resource_group.afd[0].name
 }
