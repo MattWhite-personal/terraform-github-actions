@@ -36,22 +36,27 @@ variable "dns-resource-group" {
   description = "resource group that contains existing resources"
 }
 
-variable "cdn-resource-group" {
+variable "afd-resource-group" {
   type        = string
   description = "resource group that contains existing resources"
 }
 
+variable "afd-version" {
+  type        = string
+  default     = "standard"
+  description = "Azure Front Door version to use. Options are 'standard', 'premium'"
+}
 variable "stg-resource-group" {
   type        = string
   description = "resource group thta contains existing resources"
 }
 
-variable "use-existing-cdn-profile" {
+variable "use-existing-front-door" {
   type        = bool
   description = "true: have the module create a cdn profile per domain, false: supply one as a variable"
 }
 
-variable "existing-cdn-profile" {
+variable "existing-front-door" {
   type        = string
   description = "CDN Profile to use if use-existing-cdn-profile is true"
 }
