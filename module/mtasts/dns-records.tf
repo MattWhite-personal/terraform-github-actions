@@ -1,5 +1,5 @@
 resource "azurerm_dns_cname_record" "mta-sts" {
-  depends_on = [azurerm_cdn_frontdoor_route.mta-sts, azurerm_cdn_frontdoor_security_policy.mta-sts]
+  depends_on = [azurerm_cdn_frontdoor_route.mta-sts]
 
   name                = "mta-sts"
   zone_name           = data.azurerm_dns_zone.zone.name
