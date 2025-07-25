@@ -8,7 +8,7 @@ locals {
     "premium"  = "Premium_AzureFrontDoor",
     "default"  = "Standard_AzureFrontDoor"
   }
-  front-door-id = var.use-existing-front-door ? data.azurerm_cdn_frontdoor_profile.afd[0].id : azurerm_cdn_frontdoor_profile.mta-sts.id
+  front-door-id = var.use-existing-front-door ? data.azurerm_cdn_frontdoor_profile.afd[0].id : azurerm_cdn_frontdoor_profile.mta-sts[0].id
 }
 
 #resource "azurerm_cdn_profile" "cdnmtasts" {
