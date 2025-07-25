@@ -103,18 +103,18 @@ module "tftest-records" {
 }
 
 module "tftest-mjw-mtasts" {
-  source                   = "./module/mtasts"
+  source                  = "./module/mtasts"
   use-existing-front-door = false
   existing-front-door     = azurerm_cdn_profile.cdn-mta-sts.name
-  afd-resource-group       = azurerm_resource_group.cdnprofiles.name
-  afd-version              = "standard"
-  dns-resource-group       = azurerm_resource_group.dnszones.name
-  mx-records               = ["tftest-mjw.mail.protection.outlook.com"]
-  domain-name              = azurerm_dns_zone.tftest-mjw.name
-  depends_on               = [azurerm_resource_group.cdnprofiles, azurerm_resource_group.dnszones]
-  reporting-email          = "tls-reports@matthewjwhite.co.uk"
-  stg-resource-group       = "RG-WhiteFam-UKS"
-  resource-prefix          = "mwtftest"
-  tags                     = local.tags
-  permitted-ips            = local.permitted_ips
+  afd-resource-group      = azurerm_resource_group.cdnprofiles.name
+  afd-version             = "standard"
+  dns-resource-group      = azurerm_resource_group.dnszones.name
+  mx-records              = ["tftest-mjw.mail.protection.outlook.com"]
+  domain-name             = azurerm_dns_zone.tftest-mjw.name
+  depends_on              = [azurerm_resource_group.cdnprofiles, azurerm_resource_group.dnszones]
+  reporting-email         = "tls-reports@matthewjwhite.co.uk"
+  stg-resource-group      = "RG-WhiteFam-UKS"
+  resource-prefix         = "mwtftest"
+  tags                    = local.tags
+  permitted-ips           = local.permitted_ips
 }
