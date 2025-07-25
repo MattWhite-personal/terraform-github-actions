@@ -24,10 +24,10 @@ resource "azurerm_cdn_frontdoor_origin" "mta-sts" {
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.mta-sts.id
   enabled                        = true
   certificate_name_check_enabled = false
-  host_name                      = azurerm_storage_account.stmtasts.primary_web_host
+  host_name                      = azurerm_storage_account.mta-sts.primary_web_host
   http_port                      = 80
   https_port                     = 443
-  origin_host_header             = azurerm_storage_account.stmtasts.primary_web_host
+  origin_host_header             = azurerm_storage_account.mta-sts.primary_web_host
   priority                       = 1
   weight                         = 1
 }
