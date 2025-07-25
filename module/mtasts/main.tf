@@ -19,7 +19,7 @@ locals {
       ] :
       [cidr]
     )
-  ])
+  ], var.runner-ip != "" ? [var.runner-ip] : [])
   storage-account-name = "st${local.storage_prefix}mtasts"
 }
 
