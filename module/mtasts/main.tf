@@ -20,6 +20,7 @@ locals {
       [cidr]
     )
   ])
+  storage-account-name = "st${local.storage_prefix}mtasts"
 }
 
 #resource "azurerm_cdn_profile" "cdnmtasts" {

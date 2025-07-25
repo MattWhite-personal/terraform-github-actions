@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "mta-sts" {
-  name                            = "st${local.storage_prefix}mtasts"
+  name                            = local.storage-account-name
   resource_group_name             = var.stg-resource-group
   location                        = var.location
   account_replication_type        = "LRS"
