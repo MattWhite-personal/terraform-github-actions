@@ -26,5 +26,5 @@ data "azurerm_dns_zone" "zone" {
 data "azurerm_cdn_frontdoor_profile" "afd" {
   count = var.use-existing-front-door ? 1 : 0
   name  = var.existing-front-door
-  resource_group_name = data.azurerm_resource_group.afd.name
+  resource_group_name = data.azurerm_resource_group.afd[0].name
 }
