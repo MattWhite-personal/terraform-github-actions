@@ -104,9 +104,10 @@ module "tftest-records" {
 
 module "tftest-mjw-mtasts" {
   source                   = "./module/mtasts"
-  use-existing-cdn-profile = true
-  existing-cdn-profile     = azurerm_cdn_profile.cdn-mta-sts.name
-  cdn-resource-group       = azurerm_resource_group.cdnprofiles.name
+  use-existing-front-door = true
+  existing-front-door     = azurerm_cdn_profile.cdn-mta-sts.name
+  afd-resource-group       = azurerm_resource_group.cdnprofiles.name
+  afd-version              = "standard"
   dns-resource-group       = azurerm_resource_group.dnszones.name
   mx-records               = ["tftest-mjw.mail.protection.outlook.com"]
   domain-name              = azurerm_dns_zone.tftest-mjw.name
