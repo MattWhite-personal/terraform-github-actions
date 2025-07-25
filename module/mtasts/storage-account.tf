@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "mta-sts" {
   network_rules {
     default_action = "Deny"
     bypass         = ["AzureServices"]
-    ip_rules       = data.azurerm_network_service_tags.AzureFrontDoor-BackEnd.ipv4_cidrs
+    ip_rules       = local.afd-ip-ranges
   }
   blob_properties {
     delete_retention_policy {
