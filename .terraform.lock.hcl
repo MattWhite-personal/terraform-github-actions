@@ -1,0 +1,41 @@
+# This file is maintained automatically by "terraform init".
+# Manual edits may be lost in future updates.
+
+provider "registry.terraform.io/hashicorp/azurerm" {
+  version     = "4.38.0"
+  constraints = "~> 4.38.0"
+  hashes = [
+    "h1:7/5NKIzmZT1wlSW3rRlpZ6MaNuy7SSU5Ezp0EJb1oZA=",
+    "zh:302ff9a5979f4752c5aa0efe2ff146c46e14507dfe89c1ebed4ae8473c31cf3a",
+    "zh:61e25c2540a6a9bd23a48b672434d846fa78c5bcfaaa2fe2d79f952312d3fc0e",
+    "zh:65b37fe8fe2ce61f644442bb6db86de3c2b480e2aa30717993c0903b75a1e628",
+    "zh:89d73e2068c817b9a0d1229c527a5f47669fcbbb5d0fe960c3af2067b3c8b1ec",
+    "zh:8c3b8acb29cbbba21bde996ddccd5fb446e3c02d11295c2bdec392e3a7fc14df",
+    "zh:962dae94f6e5627acaadf5bff44e84566b57f2fc3f487c1c48513b6b7c671a37",
+    "zh:acdf79635ff290965be04ddcd33e9a3c726414d4ca688a6277f353bb476c2017",
+    "zh:b17bd777dff575ca686a04f2912bdf8fedaa0ba034506bd55b8afe25980468bd",
+    "zh:d2384123e7a297dc4e3ae44e6a91fd485ffc296569cc38089e71dde33fb706ef",
+    "zh:e0d37ba5895976b496aa6b4428b0351f1e990b7379ccaaa1497ab9752d18db12",
+    "zh:f569b65999264a9416862bca5cd2a6177d94ccb0424f3a4ef424428912b9cb3c",
+    "zh:f851bf26d95293515dbf475d38e7c8082e17a77765cbc6103a99426204912153",
+  ]
+}
+
+provider "registry.terraform.io/hashicorp/time" {
+  version = "0.13.1"
+  hashes = [
+    "h1:+W+DMrVoVnoXo3f3M4W+OpZbkCrUn6PnqDF33D2Cuf0=",
+    "zh:02cb9aab1002f0f2a94a4f85acec8893297dc75915f7404c165983f720a54b74",
+    "zh:04429b2b31a492d19e5ecf999b116d396dac0b24bba0d0fb19ecaefe193fdb8f",
+    "zh:26f8e51bb7c275c404ba6028c1b530312066009194db721a8427a7bc5cdbc83a",
+    "zh:772ff8dbdbef968651ab3ae76d04afd355c32f8a868d03244db3f8496e462690",
+    "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
+    "zh:898db5d2b6bd6ca5457dccb52eedbc7c5b1a71e4a4658381bcbb38cedbbda328",
+    "zh:8de913bf09a3fa7bedc29fec18c47c571d0c7a3d0644322c46f3aa648cf30cd8",
+    "zh:9402102c86a87bdfe7e501ffbb9c685c32bbcefcfcf897fd7d53df414c36877b",
+    "zh:b18b9bb1726bb8cfbefc0a29cf3657c82578001f514bcf4c079839b6776c47f0",
+    "zh:b9d31fdc4faecb909d7c5ce41d2479dd0536862a963df434be4b16e8e4edc94d",
+    "zh:c951e9f39cca3446c060bd63933ebb89cedde9523904813973fbc3d11863ba75",
+    "zh:e5b773c0d07e962291be0e9b413c7a22c044b8c7b58c76e8aa91d1659990dfb5",
+  ]
+}
