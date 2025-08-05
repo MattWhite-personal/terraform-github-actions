@@ -37,7 +37,7 @@ resource "azurerm_storage_account_static_website" "mta-sts" {
 }
 
 resource "azurerm_storage_blob" "mta-sts" {
-  depends_on = [ time_sleep.wait_30_seconds ]
+  depends_on             = [time_sleep.wait_30_seconds]
   name                   = ".well-known/mta-sts.txt"
   storage_account_name   = azurerm_storage_account.mta-sts.name
   storage_container_name = "$web"
@@ -51,7 +51,7 @@ ${join("", formatlist("mx: %s\n", var.mx-records))}max_age: ${var.max-age}
 }
 
 resource "azurerm_storage_blob" "index" {
-  depends_on = [ time_sleep.wait_30_seconds ]
+  depends_on             = [time_sleep.wait_30_seconds]
   name                   = "index.htm"
   storage_account_name   = azurerm_storage_account.mta-sts.name
   storage_container_name = "$web"
@@ -61,7 +61,7 @@ resource "azurerm_storage_blob" "index" {
 }
 
 resource "azurerm_storage_blob" "error" {
-  depends_on = [ time_sleep.wait_30_seconds ]
+  depends_on             = [time_sleep.wait_30_seconds]
   name                   = "error.htm"
   storage_account_name   = azurerm_storage_account.mta-sts.name
   storage_container_name = "$web"
