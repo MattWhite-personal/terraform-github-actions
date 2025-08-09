@@ -26,6 +26,7 @@ env:
 jobs:
   terraform-apply:
     name: 'Terraform Apply'
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     environment: production
     #needs: [terraform-plan]
@@ -81,5 +82,5 @@ jobs:
 
     # Terraform Apply
     - name: Terraform Apply
-      if: steps.tf-plan.outputs.exitcode == '2'
+      if: ${{ steps.tf-plan.outputs.exitcode == '2' }}
       run: terraform apply -auto-approve tfplan
