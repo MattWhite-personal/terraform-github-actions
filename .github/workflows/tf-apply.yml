@@ -73,7 +73,10 @@ jobs:
         else 
           exit 0
         fi
-        
+    
+    - name: Debug exit code
+      run: |
+        echo "Terraform plan exit code: ${{ steps.tf-plan.outputs.exitcode }}"
 
     # Terraform Apply
     - name: Terraform Apply
