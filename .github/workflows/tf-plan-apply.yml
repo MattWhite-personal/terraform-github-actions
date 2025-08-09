@@ -1,4 +1,4 @@
-name: 'Terraform Plan/Apply'
+name: 'Terraform Plan'
 
 on:
   push:
@@ -24,6 +24,7 @@ env:
 jobs:
   terraform-plan:
     name: 'Terraform Plan'
+    if: ${{ !(github.event_name == 'pull_request' && github.event.action == 'closed') }}
     runs-on: ubuntu-latest
     env:
       #this is needed since we are running terraform with read-only permissions
