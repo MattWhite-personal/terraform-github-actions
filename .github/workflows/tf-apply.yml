@@ -66,12 +66,11 @@ jobs:
         terraform plan -detailed-exitcode -var="runner-ip=${{ env.TF_VAR_runner_ip }}" -no-color -out tfplan || export exitcode=$?
 
         echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+        echo "Captured terraform plan exitcode: $exitcode"
         
         if [ $exitcode -eq 1 ]; then
           echo Terraform Plan Failed!
           exit 1
-        else 
-          exit 0
         fi
     
     - name: Debug exit code
