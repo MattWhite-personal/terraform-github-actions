@@ -95,7 +95,7 @@ module "tftest-records" {
       records = [
         "MS=ms59722365",
         "v=spf1 include:spf.protection.outlook.com -all",
-        azurerm_static_web_app_custom_domain.matthewjwhite-dev.validation_token
+        azurerm_static_web_app_custom_domain.matthewjwhite-dev.validation_token == "" ? "validated" : azurerm_static_web_app_custom_domain.matthewjwhite-dev.validation_token
       ]
     }
 
