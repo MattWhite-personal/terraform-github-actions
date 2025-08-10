@@ -31,14 +31,6 @@ jobs:
       tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
 
     steps:   
-    #Get the IP address of the GitHub Actions runner
-    - name: Get GitHub Actions Runner IP
-      id: get-runner-ip
-      run: |
-          IP=$(curl -s https://api.ipify.org)
-          echo "Runner IP: $IP"
-          echo "TF_VAR_runner_ip=$IP/32" >> $GITHUB_ENV
-    
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
@@ -52,6 +44,56 @@ jobs:
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
+    
+    # Login to Azure CLI to support temporary runner IP allow-list
+    - name: Setup Azure CLI
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+    #Get the IP address of the GitHub Actions runner
+    - name: Get GitHub Actions Runner IP
+      id: get-runner-ip
+      run: |
+          IP=$(curl -s https://api.ipify.org)
+          echo "Runner IP: $IP"
+          echo "TF_VAR_runner_ip=$IP/32" >> $GITHUB_ENV
+          echo "runner_ip=$IP" >> $GITHUB_OUTPUT
+
+    - name: Get storage accounts from module matching 'mta-sts'
+      id: get-storage-accounts
+      run: |
+        # Extract pairs of storage account name and resource group name separated by a comma
+        PAIRS=$(terraform state pull | jq -r '
+          .resources[]
+          | select(
+              .type == "azurerm_storage_account"
+              and (.module != null)
+              and (.name | test("mta-sts"))
+            )
+          | .instances[]
+          | "\(.attributes.name),\(.attributes.resource_group_name)"
+        ' | sort -u)
+
+        echo "Found storage accounts and resource groups:"
+        echo "$PAIRS"
+
+        # Set output for later steps; replacing newlines with semicolons to keep it as one string
+        FORMATTED_OUTPUT=$(echo "$PAIRS" | paste -sd ";" -)
+        echo "::set-output name=storage_accounts_and_rgs::$FORMATTED_OUTPUT"
+
+    - name: Temporarily Allow Runner IP
+      run: |
+        for pair in "${PAIRS[@]}"; do
+          IFS=',' read -ra PARTS <<< "${{ steps.get-storage-accounts.outputs.storage_accounts_and_rgs }}"
+          STORAGE_ACCOUNT="${PARTS[0]}"
+          RESOURCE_GROUP="${PARTS[1]}"
+          echo "Storage account: $STORAGE_ACCOUNT, Resource group: $RESOURCE_GROUP"
+          az storage account network-rule add --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ env.TF_VAR_runner_ip }}
+          # Do something with STORAGE_ACCOUNT and RESOURCE_GROUP
+        done
 
     # Checks that all Terraform configuration files adhere to a canonical format
     # Will fail the build if not
@@ -122,7 +164,19 @@ jobs:
                 repo: context.repo.repo,
                 body: body
             })
-                
+    - name: Remove Runner IP from Storage Account Firewall
+      if: always()
+      run: |
+        
+    - name: Temporarily Allow Runner IP
+      run: |
+        for pair in "${PAIRS[@]}"; do
+          IFS=',' read -ra PARTS <<< "${{ steps.get-storage-accounts.outputs.storage_accounts_and_rgs }}"
+          STORAGE_ACCOUNT="${PARTS[0]}"
+          RESOURCE_GROUP="${PARTS[1]}"
+          echo "Storage account: $STORAGE_ACCOUNT, Resource group: $RESOURCE_GROUP"
+          az storage account network-rule remove --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ env.TF_VAR_runner_ip }}
+        done                
 #  terraform-apply:
 #    name: 'Terraform Apply'
 #    if: github.event_name == 'pull_request' && github.event.action == 'closed'
