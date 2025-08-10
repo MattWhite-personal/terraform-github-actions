@@ -87,7 +87,7 @@ jobs:
     - name: Temporarily Allow Runner IP
       run: |
         echo "START"
-        IFS=';' read -ra PAIRS <<< "${{ steps.get_storage_accounts.outputs.storage_accounts_and_rgs }}"  
+        IFS=';' read -ra PAIRS <<< "${{ steps.get-storage-accounts.outputs.storage_accounts_and_rgs }}"  
         echo "preLoop"
         for pair in "${PAIRS[@]}"; do
           echo "IN LOOP"
