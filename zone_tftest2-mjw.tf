@@ -8,11 +8,11 @@ resource "azurerm_dns_zone" "tftest2-mjw" {
 }
 
 module "tftest2-records" {
-  source    = "./module/dnsrecords"
-  zone_name = azurerm_dns_zone.tftest2-mjw.name
-  rg_name   = azurerm_resource_group.dnszones.name
-  tags      = local.tags
-  a-records = []
+  source       = "./module/dnsrecords"
+  zone_name    = azurerm_dns_zone.tftest2-mjw.name
+  rg_name      = azurerm_resource_group.dnszones.name
+  tags         = local.tags
+  a-records    = []
   aaaa-records = []
   caa-records = [
     {
