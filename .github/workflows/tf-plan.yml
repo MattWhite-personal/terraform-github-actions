@@ -86,8 +86,11 @@ jobs:
 
     - name: Temporarily Allow Runner IP
       run: |
+        echo "START"
         IFS=';' read -ra PAIRS <<< "${{ steps.get_storage_accounts.outputs.storage_accounts_and_rgs }}"  
+        echo "preLoop"
         for pair in "${PAIRS[@]}"; do
+          echo "IN LOOP"
           IFS=',' read -ra PARTS <<< "$pair"
           STORAGE_ACCOUNT="${PARTS[0]}"
           RESOURCE_GROUP="${PARTS[1]}"
@@ -95,6 +98,7 @@ jobs:
           az storage account network-rule add --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ env.TF_VAR_runner_ip }}
           # Do something with STORAGE_ACCOUNT and RESOURCE_GROUP
         done
+        echo "OUT LOOP"
         exit 1
     # Checks that all Terraform configuration files adhere to a canonical format
     # Will fail the build if not
