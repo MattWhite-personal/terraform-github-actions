@@ -1,3 +1,4 @@
+/*
 resource "azurerm_dns_cname_record" "mta-sts" {
   depends_on = [azurerm_cdn_frontdoor_route.mta-sts]
 
@@ -8,7 +9,7 @@ resource "azurerm_dns_cname_record" "mta-sts" {
   record              = azurerm_cdn_frontdoor_endpoint.mta-sts.host_name
   tags                = var.tags
 }
-/*
+
 resource "azurerm_dns_txt_record" "dnsauth" {
   name                = join(".", ["_dnsauth", "mta-sts"])
   zone_name           = data.azurerm_dns_zone.zone.name
