@@ -63,22 +63,21 @@ module "tftest2-records" {
 
   ]
 }
-/*
-module "tftest-mjw-mtasts" {
+
+module "tftest2-mjw-mtasts" {
   source                  = "./module/mtasts"
   use-existing-front-door = true
   existing-front-door     = azurerm_cdn_frontdoor_profile.test-mta-sts.name
   afd-resource-group      = azurerm_resource_group.cdnprofiles.name
   afd-version             = "standard"
   dns-resource-group      = azurerm_resource_group.dnszones.name
-  mx-records              = ["tftest-mjw.mail.protection.outlook.com"]
-  domain-name             = azurerm_dns_zone.tftest-mjw.name
+  mx-records              = ["tftest2-mjw.mail.protection.outlook.com"]
+  domain-name             = azurerm_dns_zone.tftest2-mjw.name
   depends_on              = [azurerm_resource_group.cdnprofiles, azurerm_resource_group.dnszones]
   reporting-email         = "tls-reports@matthewjwhite.co.uk"
   stg-resource-group      = "RG-WhiteFam-UKS"
-  resource-prefix         = "mwtftest"
+  resource-prefix         = "mwtftest2"
   tags                    = local.tags
   permitted-ips           = local.permitted_ips
   runner-ip               = var.runner-ip
 }
-*/
