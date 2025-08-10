@@ -6,19 +6,13 @@ resource "azurerm_dns_zone" "tftest2-mjw" {
   }
   tags = local.tags
 }
-/*
-module "tftest-records" {
-  source    = "./module/dnsrecords"
-  zone_name = azurerm_dns_zone.tftest-mjw.name
-  rg_name   = azurerm_resource_group.dnszones.name
-  tags      = local.tags
-  a-records = [
-    {
-      name       = "@",
-      resourceID = azurerm_static_web_app.matthewjwhite-dev.id
-      isAlias    = true
-    }
-  ]
+
+module "tftest2-records" {
+  source       = "./module/dnsrecords"
+  zone_name    = azurerm_dns_zone.tftest2-mjw.name
+  rg_name      = azurerm_resource_group.dnszones.name
+  tags         = local.tags
+  a-records    = []
   aaaa-records = []
   caa-records = [
     {
@@ -43,38 +37,7 @@ module "tftest-records" {
       ]
     }
   ]
-  cname-records = [
-    {
-      name    = "autodiscover",
-      record  = "autodiscover.outlook.com",
-      isAlias = false
-    },
-    {
-      name    = "enterpriseenrollment",
-      record  = "enterpriseenrollment.manage.microsoft.com",
-      isAlias = false
-    },
-    {
-      name    = "enterpriseregistration",
-      record  = "enterpriseregistration.windows.net",
-      isAlias = false
-    },
-    {
-      name    = "nhty6l3pj4xw4kj6tybz",
-      record  = "verify.squarespace.com",
-      isAlias = false
-    },
-    {
-      name    = "selector1._domainkey",
-      record  = "selector1-tftest-mjw._domainkey.objectatelier.onmicrosoft.com",
-      isAlias = false
-    },
-    {
-      name    = "selector2._domainkey",
-      record  = "selector2-tftest-mjw._domainkey.objectatelier.onmicrosoft.com",
-      isAlias = false
-    }
-  ]
+  cname-records = []
   mx-records = [
     {
       name = "@"
@@ -82,7 +45,7 @@ module "tftest-records" {
       records = [
         {
           preference = 0
-          exchange   = "tftest-mjw.mail.protection.outlook.com"
+          exchange   = "tftest2-mjw.mail.protection.outlook.com"
         }
       ]
     }
@@ -95,13 +58,12 @@ module "tftest-records" {
       records = [
         "MS=ms59722365",
         "v=spf1 include:spf.protection.outlook.com -all",
-        azurerm_static_web_app_custom_domain.matthewjwhite-dev.validation_token == "" ? "validated" : azurerm_static_web_app_custom_domain.matthewjwhite-dev.validation_token
       ]
     }
 
   ]
 }
-
+/*
 module "tftest-mjw-mtasts" {
   source                  = "./module/mtasts"
   use-existing-front-door = true
