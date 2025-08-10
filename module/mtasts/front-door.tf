@@ -42,6 +42,7 @@ resource "azurerm_cdn_frontdoor_route" "mta-sts" {
   patterns_to_match      = ["/*"]
   forwarding_protocol    = "HttpsOnly"
   link_to_default_domain = false
+  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.mta-sts.id]
   https_redirect_enabled = true
 }
 
