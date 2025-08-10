@@ -1,4 +1,4 @@
-resource "azurerm_dns_zone" "tftest-mjw" {
+resource "azurerm_dns_zone" "tftest2-mjw" {
   name                = "tfttest2.matthewjwhite.co.uk"
   resource_group_name = azurerm_resource_group.dnszones.name
   lifecycle {
