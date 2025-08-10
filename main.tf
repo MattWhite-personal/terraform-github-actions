@@ -146,3 +146,9 @@ resource "azurerm_cdn_profile" "cdn-mta-sts" {
   sku                 = "Standard_Microsoft"
   tags                = local.tags
 }
+
+resource "azurerm_cdn_frontdoor_profile" "test-mta-sts" {
+  name                = "test-afd-mta-sts"
+  resource_group_name = azurerm_resource_group.cdnprofiles.name
+  sku_name            = "Standard_AzureFrontDoor"
+}
