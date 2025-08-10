@@ -72,7 +72,7 @@ module "tftest2-mjw-mtasts" {
   afd-version             = "standard"
   dns-resource-group      = azurerm_resource_group.dnszones.name
   mx-records              = ["tftest2-mjw.mail.protection.outlook.com"]
-  domain-name             = azurerm_dns_zone.tftest-mjw.name
+  domain-name             = azurerm_dns_zone.tftest2-mjw.name
   depends_on              = [azurerm_resource_group.cdnprofiles, azurerm_resource_group.dnszones]
   reporting-email         = "tls-reports@matthewjwhite.co.uk"
   stg-resource-group      = "RG-WhiteFam-UKS"
