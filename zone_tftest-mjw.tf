@@ -105,7 +105,7 @@ module "tftest-records" {
 module "tftest-mjw-mtasts" {
   source                  = "./module/mtasts"
   use-existing-front-door = true
-  existing-front-door     = azurerm_cdn_frontdoor_profile.test-mta-sts.id
+  existing-front-door     = azurerm_cdn_frontdoor_profile.test-mta-sts.name
   afd-resource-group      = azurerm_resource_group.cdnprofiles.name
   afd-version             = "standard"
   dns-resource-group      = azurerm_resource_group.dnszones.name
