@@ -86,11 +86,8 @@ jobs:
 
     - name: Temporarily Allow Runner IP
       run: |
-        echo "START"
         IFS=';' read -ra PAIRS <<< "${{ steps.get-storage-accounts.outputs.storage_accounts_and_rgs }}"  
-        echo "preLoop"
         for pair in "${PAIRS[@]}"; do
-          echo "IN LOOP"
           IFS=',' read -ra PARTS <<< "$pair"
           STORAGE_ACCOUNT="${PARTS[0]}"
           RESOURCE_GROUP="${PARTS[1]}"
@@ -98,8 +95,7 @@ jobs:
           az storage account network-rule add --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ steps.get-runner-ip.outputs.runner_ip }}
           # Do something with STORAGE_ACCOUNT and RESOURCE_GROUP
         done
-        echo "OUT LOOP"
-        exit 1
+
     # Checks that all Terraform configuration files adhere to a canonical format
     # Will fail the build if not
     - name: Terraform Format
@@ -172,16 +168,16 @@ jobs:
     - name: Remove Runner IP from Storage Account Firewall
       if: always()
       run: |
-        
-    - name: Remove Allowed Runnder IPs Runner IP
-      run: |
+        IFS=';' read -ra PAIRS <<< "${{ steps.get-storage-accounts.outputs.storage_accounts_and_rgs }}"  
         for pair in "${PAIRS[@]}"; do
-          IFS=',' read -ra PARTS <<< "${{ steps.get-storage-accounts.outputs.storage_accounts_and_rgs }}"
+          IFS=',' read -ra PARTS <<< "$pair"
           STORAGE_ACCOUNT="${PARTS[0]}"
           RESOURCE_GROUP="${PARTS[1]}"
           echo "Storage account: $STORAGE_ACCOUNT, Resource group: $RESOURCE_GROUP"
-          az storage account network-rule remove --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ env.TF_VAR_runner_ip }}
-        done                
+          az storage account network-rule remove --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ steps.get-runner-ip.outputs.runner_ip }}
+          # Do something with STORAGE_ACCOUNT and RESOURCE_GROUP
+        done
+      
 #  terraform-apply:
 #    name: 'Terraform Apply'
 #    if: github.event_name == 'pull_request' && github.event.action == 'closed'
