@@ -109,3 +109,14 @@ jobs:
     # Terraform Apply
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
+    - name: Remove Runner IP from Storage Account Firewall
+      if: always()
+      run: |
+        IFS=';' read -ra PAIRS <<< "${{ steps.get-storage-accounts.outputs.storage_accounts_and_rgs }}"  
+        for pair in "${PAIRS[@]}"; do
+          IFS=',' read -ra PARTS <<< "$pair"
+          STORAGE_ACCOUNT="${PARTS[0]}"
+          RESOURCE_GROUP="${PARTS[1]}"
+          echo "Storage account: $STORAGE_ACCOUNT, Resource group: $RESOURCE_GROUP"
+          az storage account network-rule remove --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ steps.get-runner-ip.outputs.runner_ip }}
+        done
