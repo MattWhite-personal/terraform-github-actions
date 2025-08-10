@@ -44,7 +44,7 @@ resource "azurerm_cdn_frontdoor_route" "mta-sts" {
   link_to_default_domain = true
   https_redirect_enabled = true
 }
-
+/*
 resource "azurerm_cdn_frontdoor_custom_domain" "mta-sts" {
   name                     = local.afd-prefix
   cdn_frontdoor_profile_id = local.front-door-id
@@ -62,3 +62,4 @@ resource "azurerm_cdn_frontdoor_custom_domain_association" "mta-sts" {
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.mta-sts.id
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.mta-sts.id]
 }
+*/
