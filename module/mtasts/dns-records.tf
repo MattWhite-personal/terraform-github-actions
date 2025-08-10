@@ -1,3 +1,4 @@
+/*
 resource "azurerm_dns_cname_record" "mta-sts" {
   depends_on = [azurerm_cdn_frontdoor_route.mta-sts]
 
@@ -32,6 +33,7 @@ resource "azurerm_dns_txt_record" "mta-sts" {
     value = "v=STSv1; id=${local.policyhash}"
   }
 }
+*/
 
 resource "azurerm_dns_txt_record" "smtp-tls" {
   name                = "_smtp._tls"

@@ -1,3 +1,5 @@
+/*
+
 resource "azurerm_cdn_frontdoor_profile" "mta-sts" {
   count               = var.use-existing-front-door ? 0 : 1
   name                = "afd-mta-sts"
@@ -62,3 +64,5 @@ resource "azurerm_cdn_frontdoor_custom_domain_association" "mta-sts" {
   cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.mta-sts.id
   cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.mta-sts.id]
 }
+
+*/
