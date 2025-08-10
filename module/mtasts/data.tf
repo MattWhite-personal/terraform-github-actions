@@ -7,8 +7,8 @@ data "azurerm_network_service_tags" "AzureFrontDoor-BackEnd" {
 
 # If using an existing Front Door, get the resource group
 data "azurerm_resource_group" "afd" {
-  count = var.use-existing-front-door ? 0 : 1
-  name  = var.afd-resource-group
+  #count = var.use-existing-front-door ? 1 : 0
+  name = var.afd-resource-group
 }
 
 # Get the resource group for DNS records
@@ -26,5 +26,5 @@ data "azurerm_dns_zone" "zone" {
 data "azurerm_cdn_frontdoor_profile" "afd" {
   count               = var.use-existing-front-door ? 1 : 0
   name                = var.existing-front-door
-  resource_group_name = data.azurerm_resource_group.afd[0].name
+  resource_group_name = data.azurerm_resource_group.afd.name
 }
