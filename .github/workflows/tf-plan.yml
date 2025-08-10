@@ -95,7 +95,7 @@ jobs:
           STORAGE_ACCOUNT="${PARTS[0]}"
           RESOURCE_GROUP="${PARTS[1]}"
           echo "Storage account: $STORAGE_ACCOUNT, Resource group: $RESOURCE_GROUP"
-          az storage account network-rule add --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ env.TF_VAR_runner_ip }}
+          az storage account network-rule add --resource-group $RESOURCE_GROUP  --account-name $STORAGE_ACCOUNT --ip-address ${{ steps.get-runner-ip.outputs.runner_ip }}
           # Do something with STORAGE_ACCOUNT and RESOURCE_GROUP
         done
         echo "OUT LOOP"
