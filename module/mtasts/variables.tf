@@ -14,7 +14,7 @@ variable "mtastsmode" {
   description = "MTA-STS policy 'mode'. Either 'testing' or 'enforce'."
 
   validation {
-    condition     = contains(["testing", "enforced"], lower(var.mtastsversion))
+    condition     = contains(["testing", "enforced"], lower(var.mtastsmode))
     error_message = "Only 'testing' or 'enforced' are accepted values."
   }
 }
