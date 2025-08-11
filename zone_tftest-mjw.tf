@@ -116,6 +116,5 @@ module "tftest-mjw-mtasts" {
   stg-resource-group      = "RG-WhiteFam-UKS"
   resource-prefix         = "mwtftest"
   tags                    = local.tags
-  permitted-ips           = local.permitted_ips
   runner-ip               = var.runner-ip
 }
