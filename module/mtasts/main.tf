@@ -1,6 +1,6 @@
 locals {
   tls_rpt_email  = length(split("@", var.reporting-email)) == 2 ? var.reporting-email : "${var.reporting-email}@${var.domain-name}"
-  policyhash     = md5("${var.mtastsmode},${join(",", var.mx-records)}")
+  policyhash     = md5("${var.mtastsmode},${join(",", var.mx-records)},var.max-age")
   afd-prefix     = "cdn${var.resource-prefix}mtasts"
   storage_prefix = coalesce(var.resource-prefix, substr(replace(local.afd-prefix, "-", ""), 0, 16))
   afd-version = {
