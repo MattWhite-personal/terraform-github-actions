@@ -14,7 +14,7 @@ variable "mtastsmode" {
   description = "MTA-STS policy 'mode'. Either 'testing' or 'enforce'."
 
   validation {
-    condition     = contains(["testing", "enforced"], lower(var.afd-version))
+    condition     = contains(["testing", "enforced"], lower(var.mtastsversion))
     error_message = "Only 'testing' or 'enforced' are accepted values."
   }
 }
@@ -44,10 +44,10 @@ variable "reporting-email" {
     condition = can(
       regex(
         "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$",
-        lower(var.user_email)
+        lower(var.reporting-email)
       )
     )
-    error_message = "The user_email must be a valid email address."
+    error_message = "The reporting-email must be a valid email address."
   }
 }
 
@@ -103,7 +103,7 @@ variable "tags" {
 
   validation {
     condition = alltrue([
-      for k, v in var.azure_tags : length(trim(k)) > 0 && length(trim(v)) > 0
+      for k, v in var.tags : length(trim(k)) > 0 && length(trim(v)) > 0
     ])
     error_message = "All tag keys and values must be non-empty strings."
   }
