@@ -107,7 +107,7 @@ module "tftest-mjw-mtasts" {
   use-existing-front-door = true
   existing-front-door     = azurerm_cdn_frontdoor_profile.test-mta-sts.name
   afd-resource-group      = azurerm_resource_group.cdnprofiles.name
-  afd-version             = "standard"
+  afd-version             = "standard2"
   dns-resource-group      = azurerm_resource_group.dnszones.name
   mx-records              = ["tftest-mjw.mail.protection.outlook.com"]
   max-age                 = 86401
