@@ -78,6 +78,5 @@ module "tftest2-mjw-mtasts" {
   stg-resource-group      = "RG-WhiteFam-UKS"
   resource-prefix         = "mwtftest2"
   tags                    = local.tags
-  permitted-ips           = local.permitted_ips
   runner-ip               = var.runner-ip
 }

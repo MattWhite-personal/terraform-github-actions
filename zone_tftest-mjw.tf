@@ -110,12 +110,12 @@ module "tftest-mjw-mtasts" {
   afd-version             = "standard"
   dns-resource-group      = azurerm_resource_group.dnszones.name
   mx-records              = ["tftest-mjw.mail.protection.outlook.com"]
+  max-age                 = 86401
   domain-name             = azurerm_dns_zone.tftest-mjw.name
   depends_on              = [azurerm_resource_group.cdnprofiles, azurerm_resource_group.dnszones]
   reporting-email         = "tls-reports@matthewjwhite.co.uk"
   stg-resource-group      = "RG-WhiteFam-UKS"
   resource-prefix         = "mwtftest"
   tags                    = local.tags
-  permitted-ips           = local.permitted_ips
   runner-ip               = var.runner-ip
 }
