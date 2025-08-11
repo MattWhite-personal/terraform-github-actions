@@ -103,7 +103,7 @@ variable "tags" {
 
   validation {
     condition = alltrue([
-      for k, v in var.tags : length(trim(k)) > 0 && length(trim(v)) > 0
+      for k, v in var.tags : length(trim(k, " \t\n\r")) > 0 && length(trim(v, " \t\n\r")) > 0
     ])
     error_message = "All tag keys and values must be non-empty strings."
   }
