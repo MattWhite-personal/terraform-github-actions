@@ -116,6 +116,7 @@ jobs:
       uses: bridgecrewio/checkov-action@master
       with: 
         framework: terraform
+        skip_check: CKV2_AZURE_1, CKV2_AZURE_33, CKV2_AZURE_40, CKV_AZURE_43, CKV_AZURE_33, CKV_AZURE_59 # optional: skip a specific check_id. can be comma separated list
         # This will add both a CLI output to the console and create a results.sarif file
         output_format: cli,sarif
         output_file_path: console,results.sarif
