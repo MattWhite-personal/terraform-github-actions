@@ -87,7 +87,7 @@ variable "existing-front-door" {
   default     = ""
 
   validation {
-    condition     = !(var.use-existing-front-door) || (length(trim(var.existing-front-door)) > 0)
+    condition     = !(var.use-existing-front-door) || (length(trim(var.existing-front-door, " \t\n\r")) > 0)
     error_message = "existing_front_door must be set (non-empty) if use_existing_front_door is true."
   }
 }
