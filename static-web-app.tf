@@ -55,7 +55,44 @@ resource "azurerm_cdn_frontdoor_route" "static-web-app" {
   supported_protocols    = ["Http", "Https"]
   patterns_to_match      = ["/*"]
   forwarding_protocol    = "HttpsOnly"
-  link_to_default_domain = true
-  #cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.mta-sts.id]
+  link_to_default_domain = false
+  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.static-web-app.id]
   https_redirect_enabled = true
+}
+
+resource "azurerm_dns_cname_record" "static-web-app" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.tftest-mjw.name
+  resource_group_name = azurerm_resource_group.dnszones.name
+  ttl                 = 300
+  record              = azurerm_cdn_frontdoor_endpoint.static-web-app.host_name
+}
+
+resource "azurerm_dns_txt_record" "dnsauth" {
+  name                = "_dnsauth"
+  zone_name           = azurerm_dns_zone.tftest-mjw.name
+  resource_group_name = azurerm_resource_group.dnszones.name
+  ttl                 = 300
+
+  record {
+    value = azurerm_cdn_frontdoor_custom_domain.static-web-app.validation_token
+  }
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain" "static-web-app" {
+  name                     = "afd-cd-swa-test"
+  cdn_frontdoor_profile_id = azurerm_cdn_profile.cdn-mta-sts.id
+  dns_zone_id              = azurerm_dns_zone.tftest-mjw.id
+  host_name                = azurerm_dns_zone.tftest-mjw.name
+
+  tls {
+    certificate_type    = "ManagedCertificate"
+    minimum_tls_version = "TLS12"
+  }
+
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain_association" "static-web-app" {
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.static-web-app.id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.static-web-app.id]
 }
