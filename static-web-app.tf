@@ -2,8 +2,8 @@ resource "azurerm_static_web_app" "matthewjwhite-dev" {
   name                = "matthewjwhite-dev2"
   resource_group_name = azurerm_resource_group.other-stuff.name
   location            = "westeurope"
-  sku_size            = "Free"
-  sku_tier            = "Free"
+  sku_size            = "Standard"
+  sku_tier            = "Standard"
   tags                = local.tags
 
   lifecycle {
@@ -52,10 +52,47 @@ resource "azurerm_cdn_frontdoor_route" "static-web-app" {
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.static-web-app.id
   cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.static-web-app.id]
 
-  supported_protocols    = ["Http", "Https"]
-  patterns_to_match      = ["/*"]
-  forwarding_protocol    = "HttpsOnly"
-  link_to_default_domain = true
-  #cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.mta-sts.id]
-  https_redirect_enabled = true
+  supported_protocols             = ["Http", "Https"]
+  patterns_to_match               = ["/*"]
+  forwarding_protocol             = "HttpsOnly"
+  link_to_default_domain          = false
+  cdn_frontdoor_custom_domain_ids = [azurerm_cdn_frontdoor_custom_domain.static-web-app.id]
+  https_redirect_enabled          = true
+}
+
+resource "azurerm_dns_cname_record" "static-web-app" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.tftest-mjw.name
+  resource_group_name = azurerm_resource_group.dnszones.name
+  ttl                 = 300
+  record              = azurerm_cdn_frontdoor_endpoint.static-web-app.host_name
+}
+
+resource "azurerm_dns_txt_record" "dnsauth" {
+  name                = "_dnsauth"
+  zone_name           = azurerm_dns_zone.tftest-mjw.name
+  resource_group_name = azurerm_resource_group.dnszones.name
+  ttl                 = 300
+
+  record {
+    value = azurerm_cdn_frontdoor_custom_domain.static-web-app.validation_token
+  }
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain" "static-web-app" {
+  name                     = "afd-cd-swa-test"
+  cdn_frontdoor_profile_id = azurerm_cdn_profile.cdn-mta-sts.id
+  dns_zone_id              = azurerm_dns_zone.tftest-mjw.id
+  host_name                = azurerm_dns_zone.tftest-mjw.name
+
+  tls {
+    certificate_type    = "ManagedCertificate"
+    minimum_tls_version = "TLS12"
+  }
+
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain_association" "static-web-app" {
+  cdn_frontdoor_custom_domain_id = azurerm_cdn_frontdoor_custom_domain.static-web-app.id
+  cdn_frontdoor_route_ids        = [azurerm_cdn_frontdoor_route.static-web-app.id]
 }
