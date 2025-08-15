@@ -66,8 +66,8 @@ variable "afd-version" {
   default     = "standard"
   description = "Azure Front Door version to use. Options are 'standard', 'premium'"
   validation {
-    condition     = contains(["standard", "premium"], lower(var.afd-version))
-    error_message = "Only 'standard' or 'premium' are accepted values."
+    condition     = contains(["standard"], lower(var.afd-version))
+    error_message = "Only 'standard' is an accepted values. Premium Support and Private Endpoints coming soon."
   }
 }
 variable "stg-resource-group" {
@@ -77,7 +77,7 @@ variable "stg-resource-group" {
 
 variable "use-existing-front-door" {
   type        = bool
-  description = "true: have the module create a cdn profile per domain, false: supply one as a variable"
+  description = "true: have the module use an existing Azure Front Door instance, false: supply one as a variable"
   default     = false
 }
 
