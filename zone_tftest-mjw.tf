@@ -8,11 +8,17 @@ resource "azurerm_dns_zone" "tftest-mjw" {
 }
 
 module "tftest-records" {
-  source       = "./module/dnsrecords"
-  zone_name    = azurerm_dns_zone.tftest-mjw.name
-  rg_name      = azurerm_resource_group.dnszones.name
-  tags         = local.tags
-  a-records    = []
+  source    = "./module/dnsrecords"
+  zone_name = azurerm_dns_zone.tftest-mjw.name
+  rg_name   = azurerm_resource_group.dnszones.name
+  tags      = local.tags
+  a-records = [
+    {
+      name    = "@"
+      record  = azurerm_cdn_frontdoor_endpoint.static-web-app.id
+      isAlias = true
+    },
+  ]
   aaaa-records = []
   caa-records = [
     {
@@ -38,11 +44,6 @@ module "tftest-records" {
     }
   ]
   cname-records = [
-    {
-      name    = "@",
-      record  = azurerm_cdn_frontdoor_endpoint.static-web-app.host_name
-      isAlias = false
-    },
     {
       name    = "autodiscover",
       record  = "autodiscover.outlook.com",
