@@ -2,8 +2,8 @@ resource "azurerm_static_web_app" "matthewjwhite-dev" {
   name                = "matthewjwhite-dev2"
   resource_group_name = azurerm_resource_group.other-stuff.name
   location            = "westeurope"
-  sku_size            = "Free"
-  sku_tier            = "Free"
+  sku_size            = "Standard"
+  sku_tier            = "Standard"
   tags                = local.tags
 
   lifecycle {
