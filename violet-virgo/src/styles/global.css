@@ -192,3 +192,26 @@ hr {
 	font-size: 1.15em;
 	background-color: #F8FCFD;
 }
+
+pre {
+	@apply rounded-md pl-8;
+}
+
+pre code {
+	@apply block leading-tight p-2 pl-1;
+	font-size: 17px;
+	counter-reset: step;
+	counter-increment: step 0;
+}
+
+pre code .line {
+	@apply relative;
+}
+
+pre code .line::before {
+	@apply absolute overflow-hidden w-7 h-4 -left-9 top-0 text-right;
+	content: counter(step);
+	counter-increment: step;
+	color: rgb(var(--grey-light));
+	padding-right: 15px;
+}
