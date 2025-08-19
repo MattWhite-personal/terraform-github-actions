@@ -1,0 +1,202 @@
+---
+title: "Reporting on Entra Enterprise Apps that are enabled for Provisioning"
+pubDate: "2025-07-12"
+categories:
+  - "infrastructure"
+tags:
+  - "Entra"
+  - "SCIM"
+  - "Provisioning"
+  - "Microsoft Graph"
+heroImage: "/blog-terraform-dns.png"
+description: "Using Microsoft Graph to iterate through Enterprise Applications in an Entra ID tenant and identifying those that have SCIM Provisioning enabled"
+---
+
+# Overview
+
+I recently had a requirement to look at how many Entra integrated apps were configured to provision users into them. [Entra ID Provisioning](https://learn.microsoft.com/en-us/entra/identity/app-provisioning/user-provisioning) allows for the automated and manual lifecycle management of users using [SCIM](https://en.wikipedia.org/wiki/System_for_Cross-domain_Identity_Management). Automating these activities via SCIM can significantly reduce the effort to setup users in the external applications but, more importantly, linking the account activities in the application back to your core Identity service ensures that only valid and active users have access to that service.
+
+I expected there would be a native view in Entra to show these but alas there doesn't appear to be a native function. Instead I looked at ways to do this using Microsoft Graph and produce a report into a CSV file.
+
+# Graph Endpoints and Permissions
+
+Turning to Merill Fernando's [Graph Permissions](https://graphpermissions.merill.net/) site to look for Syncrhonization endpoints I can see that `Synchronization.Read.All` will provide access to [SyncronizationJobs](https://graphpermissions.merill.net/permission/Synchronization.Read.All?tabs=apiv1%2CsynchronizationJob1). The full API endpoint is `GET /servicePrincipals/{id}/synchronization/jobs/` with `{id}` being the ID of an existing Service Principal which will require calling the `GET /servicePrincipals` to list all Applications before iterating through these to see those that have a Synchronization Job.
+
+# Scripting the report
+
+Now that I know what needs to be queried I need to build a script to capture the data and produce a CSV output that can be shared with other teams. This will be using the Microsoft.Graph PowerShell modules, the installation of which is outside the scope of the blog post.
+
+The Script will:
+
+1. Connect to Microsoft Graph with the required permissions
+2. Get all Service Principals in the connected tenant
+3. Check if the Service Principal has a Synchronization Job defined
+4. Capture the Service Principal Name and ID for those that do and provide the output in a CSV file
+5. (optional) Produce a list of all Service Principals regardless of whether there is a job or not and output all to CSV
+
+## Connecting to Microsoft Graph
+
+The connection to Microsoft Graph is simple and we call in the required scopes that we need for the report.
+
+```powershell
+Connect-MgGraph -Scopes "Synchronization.Read.All", "Application.Read.All"
+```
+
+If you haven't previously used the permissions against MS Graph you will be prompted to provide an appropriate administrative account to consent to the Graph Permissions.
+
+## Get all Service Principals
+
+Gathering all the Service Principals in the tenant is easily handled by the [Get-MgServicePrincipal](https://learn.microsoft.com/en-gb/powershell/module/microsoft.graph.applications/get-mgserviceprincipal?view=graph-powershell-1.0) cmdlet. By default the cmdlet will only bring the first page of Graph results back. To ensure that all applications are captured you must pass in the `-all` attribute. I also sort the list by DisplayName to support the reading of the output
+
+```powershell
+$sps = get-MgServicePrincipal -All | Sort-Object DisplayName
+```
+
+## Check if the Service Principal has a Synchronization Job
+
+Now that all the Service Principals are captured into a PowerShell object we must iterate through the list and find if there any Synchronization Jobs
+
+```powershell
+foreach ($sp in $sps) {
+    $job = Get-MgServicePrincipalSynchronizationJob -ServicePrincipalId $sp.Id -ErrorAction SilentlyContinue
+    if ($job) {
+        # A synchronization job exists
+    } else {
+        # No synchronization job exists
+    }
+}
+```
+
+## Create the Report
+
+With the iteration of each Service Principal we now have a list of each of the jobs so lets build a report. I am a big fan of the DataTable construct as I can define my structure and then add multiple rows which can then be filtered and sorted.
+
+```powershell
+$reportTable = New-Object System.Data.DataTable
+$reportTable.Columns.Add("ServicePrincipalId", [string]) | Out-Null
+$reportTable.Columns.Add("ServicePrincipalDisplayName", [string]) | Out-Null
+$reportTable.Columns.Add("Job", [string]) | Out-Null
+```
+
+A fairly simple table but now we can add rows to the table when we find an app that is making use of SCIM
+
+```powershell
+$row = $reportTable.NewRow()
+$row.ServicePrincipalId = $sp.Id
+$row.ServicePrincipalDisplayName = $sp.DisplayName
+$row.Job = "SCIM is configured"
+$reportTable.Rows.Add($row)
+```
+
+Now that we have the data in our data table it can be exported to a CSV file for wider consumption
+
+```powershell
+$reportPath = "C:\Temp\report.csv"
+$reportTable | Export-Csv -NoTypeInformation -Path $reportPath
+```
+
+### Optional report on all Service Principals
+
+If we want to report on all rows we can repeat the $row code in the `else` section of the previous section but modify the `$row.job` entry but we need to consider this as a conditional output so the code looks like. This checks for a $reportAll variable earlier in the script and if it's true creates additional rows
+
+```powershell
+if ($reportAll) {
+    $row = $reportTable.NewRow()
+    $row.ServicePrincipalId = $sp.Id
+    $row.ServicePrincipalDisplayName = $sp.DisplayName
+    $row.Job = "SCIM is not configured"
+    $reportTable.Rows.Add($row)
+}
+```
+
+# The Whole Script
+
+Bringing this all together into a single script I now have
+
+```powershell title="Get-EntraSCIMReport.ps1" showLineNumbers
+<#
+    .SYNOPSIS
+    This script generates a report of Entra ID Service Principals with their SCIM synchronization job status.
+    .DESCRIPTION
+    This script retrieves all Service Principals in Entra ID and checks if they have a SCIM synchronization job configured.
+    .PARAMETER exportPath
+    The path where the report will be exported as a CSV file.
+    .PARAMETER reportAll
+    If set to true, the report will include Service Principals that do not have SCIM synchronization jobs configured.
+    .EXAMPLE
+    .\Get-EntraIdServicePrincipalScimReport.ps1 -exportPath "C:\Reports\SCIMReport.csv" -reportAll $true
+    Gets all Service Principals and generates a report including those without SCIM synchronization jobs, exporting it to the specified path.
+    .EXAMPLE
+    .\Get-EntraIdServicePrincipalScimReport.ps1 -exportPath "C:\Reports\SCIMReport.csv"
+    Gets all Service Principals and generates a report only for those with SCIM synchronization jobs, exporting it to the specified path.
+
+#>
+
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$exportPath,
+
+    [Parameter(Mandatory = $false)]
+    [bool]$reportAll = $false
+)
+# Ensure the Microsoft Graph PowerShell module is installed
+try {
+    Import-Module -Name Microsoft.Graph.Authentication, Microsoft.Graph.Applications -ErrorAction Stop
+} catch {
+    Write-Error "Microsoft Graph PowerShell module is not installed. Please install it using 'Install-Module Microsoft.Graph'."
+    exit 1
+}
+
+# Connect to Microsoft Graph
+try {
+    Connect-MgGraph -Scopes "Synchronization.Read.All", "Application.Read.All"
+} catch {
+    Write-Error "Failed to connect to Microsoft Graph. Please ensure you have the necessary permissions."
+    exit 1
+}
+# Check if the export path is valid
+if (-not (Test-Path -Path (Split-Path -Path $exportPath -Parent))) {
+    Write-Error "The specified export path does not exist: $exportPath"
+    exit 1
+}
+# Initialize the report table
+$reportTable = New-Object System.Data.DataTable
+$reportTable.Columns.Add("ServicePrincipalId", [string]) | Out-Null
+$reportTable.Columns.Add("ServicePrincipalDisplayName", [string]) | Out-Null
+$reportTable.Columns.Add("Job", [string]) | Out-Null
+
+# Get all Service Principals
+try {
+    $sps = Get-MgServicePrincipal -All | Sort-Object DisplayName -ErrorAction Stop
+} catch {
+    Write-Error "Failed to retrieve Service Principals. Please check your permissions."
+    exit 1
+}
+
+# Check each Service Principal for SCIM synchronization jobs
+foreach ($sp in $sps) {
+    Write-Host "Checking Service Principal: $($sp.DisplayName) ($($sp.Id))"
+    $job = Get-MgServicePrincipalSynchronizationJob -ServicePrincipalId $sp.Id -ErrorAction SilentlyContinue
+    if ($job) {
+        Write-Host "Found SCIM synchronization job for Service Principal: $($sp.DisplayName) ($($sp.Id))"
+        $row = $reportTable.NewRow()
+        $row.ServicePrincipalId = $sp.Id
+        $row.ServicePrincipalDisplayName = $sp.DisplayName
+        $row.Job = "SCIM is configured"
+        $reportTable.Rows.Add($row)
+    }
+    else {
+        Write-Host "No SCIM synchronization job found for Service Principal: $($sp.DisplayName) ($($sp.Id))"
+        if ($reportAll) {
+            $row = $reportTable.NewRow()
+            $row.ServicePrincipalId = $sp.Id
+            $row.ServicePrincipalDisplayName = $sp.DisplayName
+            $row.Job = "SCIM is not configured"
+            $reportTable.Rows.Add($row)
+        }
+    }
+}
+
+# Export the report to CSV
+$reportTable | Export-Csv -NoTypeInformation -Path $exportPath
+```
