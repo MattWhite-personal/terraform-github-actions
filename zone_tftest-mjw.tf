@@ -12,13 +12,7 @@ module "tftest-records" {
   zone_name = azurerm_dns_zone.tftest-mjw.name
   rg_name   = azurerm_resource_group.dnszones.name
   tags      = local.tags
-  a-records = [
-    {
-      name    = "@"
-      record  = azurerm_cdn_frontdoor_endpoint.static-web-app.id
-      isAlias = true
-    },
-  ]
+  a-records = []
   aaaa-records = []
   caa-records = [
     {
@@ -96,12 +90,6 @@ module "tftest-records" {
         "MS=ms59722365",
         "v=spf1 include:spf.protection.outlook.com -all",
         #azurerm_static_web_app_custom_domain.matthewjwhite-dev.validation_token == "" ? "validated" : azurerm_static_web_app_custom_domain.matthewjwhite-dev.validation_token
-      ]
-    },
-    {
-      name = "_dnsauth",
-      records = [
-        azurerm_cdn_frontdoor_custom_domain.static-web-app.validation_token
       ]
     }
   ]
