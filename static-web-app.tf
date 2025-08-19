@@ -83,7 +83,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "static-web-app" {
   name                     = "afd-cd-swa-test"
   cdn_frontdoor_profile_id = azurerm_cdn_profile.cdn-mta-sts.id
   dns_zone_id              = azurerm_dns_zone.tftest-mjw.id
-  host_name                = azurerm_dns_zone.tftest-mjw.name
+  host_name                = join(".",["www",azurerm_dns_zone.tftest-mjw.name])
 
   tls {
     certificate_type    = "ManagedCertificate"
