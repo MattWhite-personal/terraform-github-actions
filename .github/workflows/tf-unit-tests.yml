@@ -52,7 +52,7 @@ jobs:
      # Upload results to GitHub Advanced Security
     - name: Upload SARIF file
       if: steps.checkov.outcome == 'success'
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: results.sarif
         category: checkov
@@ -125,7 +125,7 @@ jobs:
      # Upload results to GitHub Advanced Security
     - name: Upload SARIF file
       if: success() || failure()
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: results.sarif
         category: checkov
