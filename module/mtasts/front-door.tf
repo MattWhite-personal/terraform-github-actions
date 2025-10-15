@@ -53,8 +53,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "mta-sts" {
   host_name                = "${azurerm_dns_cname_record.mta-sts.name}.${azurerm_dns_cname_record.mta-sts.zone_name}"
 
   tls {
-    certificate_type    = "ManagedCertificate"
-    minimum_tls_version = "TLS12"
+    certificate_type = "ManagedCertificate"
   }
 
 }
