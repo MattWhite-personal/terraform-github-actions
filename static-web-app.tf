@@ -60,16 +60,16 @@ resource "azurerm_cdn_frontdoor_route" "static-web-app" {
   https_redirect_enabled          = true
 }
 
-resource "azurerm_dns_cname_record" "static-web-app" {
-  name                = "www"
+resource "azurerm_dns_a_record" "static-web-app" {
+  name                = "@"
   zone_name           = azurerm_dns_zone.tftest-mjw.name
   resource_group_name = azurerm_resource_group.dnszones.name
   ttl                 = 300
-  record              = azurerm_cdn_frontdoor_endpoint.static-web-app.host_name
+  target_resource_id  = azurerm_cdn_frontdoor_endpoint.static-web-app.id
 }
 
 resource "azurerm_dns_txt_record" "dnsauth" {
-  name                = "_dnsauth.www"
+  name                = "_dnsauth"
   zone_name           = azurerm_dns_zone.tftest-mjw.name
   resource_group_name = azurerm_resource_group.dnszones.name
   ttl                 = 300
@@ -82,12 +82,11 @@ resource "azurerm_dns_txt_record" "dnsauth" {
 resource "azurerm_cdn_frontdoor_custom_domain" "static-web-app" {
   name                     = "afd-cd-swa-test"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.test-mta-sts.id
-  dns_zone_id              = azurerm_dns_zone.tftest-mjw.id
-  host_name                = "${azurerm_dns_cname_record.static-web-app.name}.${azurerm_dns_cname_record.static-web-app.zone_name}"
+  #dns_zone_id              = azurerm_dns_zone.tftest-mjw.id
+  host_name = "${azurerm_dns_cname_record.static-web-app.name}.${azurerm_dns_cname_record.static-web-app.zone_name}"
 
   tls {
     certificate_type    = "ManagedCertificate"
-    minimum_tls_version = "TLS12"
   }
 
 }
