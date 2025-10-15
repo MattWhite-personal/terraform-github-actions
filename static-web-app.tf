@@ -82,7 +82,7 @@ resource "azurerm_dns_txt_record" "dnsauth" {
 resource "azurerm_cdn_frontdoor_custom_domain" "static-web-app" {
   name                     = "afd-cd-swa-test"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.test-mta-sts.id
-  host_name                = "${azurerm_dns_cname_record.static-web-app.name}.${azurerm_dns_cname_record.static-web-app.zone_name}"
+  host_name                = azurerm_dns_zone.tftest-mjw.name
 
   tls {
     certificate_type = "ManagedCertificate"
