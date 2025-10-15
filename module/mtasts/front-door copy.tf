@@ -19,17 +19,30 @@ resource "azurerm_cdn_frontdoor_origin_group" "mta-sts" {
   load_balancing {}
 }
 
-resource "azurerm_cdn_frontdoor_origin" "mta-sts" {
-  name                           = "example-origin"
+resource "azurerm_cdn_frontdoor_origin" "mta-sts-primary" {
+  name                           = "primary-origin"
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.mta-sts.id
   enabled                        = true
-  certificate_name_check_enabled = false
+  certificate_name_check_enabled = true
   host_name                      = azurerm_storage_account.mta-sts.primary_web_host
   http_port                      = 80
   https_port                     = 443
   origin_host_header             = azurerm_storage_account.mta-sts.primary_web_host
   priority                       = 1
-  weight                         = 1
+  weight                         = 1000
+}
+
+resource "azurerm_cdn_frontdoor_origin" "mta-sts-secondary" {
+  name                           = "secondary-origin"
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.mta-sts.id
+  enabled                        = true
+  certificate_name_check_enabled = true
+  host_name                      = azurerm_storage_account.mta-sts.secondary_web_host
+  http_port                      = 80
+  https_port                     = 443
+  origin_host_header             = azurerm_storage_account.mta-sts.secondary_web_host
+  priority                       = 2
+  weight                         = 500
 }
 
 resource "azurerm_cdn_frontdoor_route" "mta-sts" {
