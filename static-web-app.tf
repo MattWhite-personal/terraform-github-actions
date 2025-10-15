@@ -60,24 +60,24 @@ resource "azurerm_cdn_frontdoor_route" "static-web-app" {
   https_redirect_enabled          = true
 }
 
-resource "azurerm_dns_a_record" "static-web-app" {
-  name                = "@"
-  zone_name           = azurerm_dns_zone.tftest-mjw.name
-  resource_group_name = azurerm_resource_group.dnszones.name
-  ttl                 = 300
-  target_resource_id  = azurerm_cdn_frontdoor_endpoint.static-web-app.id
-}
+#resource "azurerm_dns_a_record" "static-web-app" {
+#  name                = "@"
+#  zone_name           = azurerm_dns_zone.tftest-mjw.name
+#  resource_group_name = azurerm_resource_group.dnszones.name
+#  ttl                 = 300
+#  target_resource_id  = azurerm_cdn_frontdoor_endpoint.static-web-app.id
+#}
 
-resource "azurerm_dns_txt_record" "dnsauth" {
-  name                = "_dnsauth"
-  zone_name           = azurerm_dns_zone.tftest-mjw.name
-  resource_group_name = azurerm_resource_group.dnszones.name
-  ttl                 = 300
-
-  record {
-    value = azurerm_cdn_frontdoor_custom_domain.static-web-app.validation_token
-  }
-}
+#resource "azurerm_dns_txt_record" "dnsauth" {
+#  name                = "_dnsauth"
+#  zone_name           = azurerm_dns_zone.tftest-mjw.name
+#  resource_group_name = azurerm_resource_group.dnszones.name
+#  ttl                 = 300#
+#
+#  record {
+#    value = azurerm_cdn_frontdoor_custom_domain.static-web-app.validation_token
+#  }
+#}
 
 resource "azurerm_cdn_frontdoor_custom_domain" "static-web-app" {
   name                     = "afd-cd-swa-test"
