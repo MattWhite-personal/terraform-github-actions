@@ -20,7 +20,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "mta-sts" {
 }
 
 resource "azurerm_cdn_frontdoor_origin" "mta-sts" {
-  name                           = "primary-origin"
+  name                           = "example-origin"
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.mta-sts.id
   enabled                        = true
   certificate_name_check_enabled = true
