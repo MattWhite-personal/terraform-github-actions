@@ -19,8 +19,8 @@ resource "azurerm_cdn_frontdoor_origin_group" "mta-sts" {
   load_balancing {}
 }
 
-resource "azurerm_cdn_frontdoor_origin" "mta-sts-primary" {
-  name                           = "primary-origin"
+resource "azurerm_cdn_frontdoor_origin" "mta-sts" {
+  name                           = "example-origin"
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.mta-sts.id
   enabled                        = true
   certificate_name_check_enabled = true
@@ -49,7 +49,7 @@ resource "azurerm_cdn_frontdoor_route" "mta-sts" {
   name                          = local.afd-prefix
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.mta-sts.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.mta-sts.id
-  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.mta-sts-primary.id]
+  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.mta-sts.id]
   #cdn_frontdoor_origin_ids     = [azurerm_cdn_frontdoor_origin.mta-sts-primary.id, azurerm_cdn_frontdoor_origin.mta-sts-secondary.id]
 
 
