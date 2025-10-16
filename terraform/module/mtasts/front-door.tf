@@ -31,7 +31,7 @@ resource "azurerm_cdn_frontdoor_origin" "mta-sts-primary" {
   priority                       = 1
   weight                         = 1000
 }
-
+/*
 resource "azurerm_cdn_frontdoor_origin" "mta-sts-secondary" {
   name                           = "secondary-origin"
   cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.mta-sts.id
@@ -44,12 +44,14 @@ resource "azurerm_cdn_frontdoor_origin" "mta-sts-secondary" {
   priority                       = 2
   weight                         = 500
 }
-
+*/
 resource "azurerm_cdn_frontdoor_route" "mta-sts" {
   name                          = local.afd-prefix
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.mta-sts.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.mta-sts.id
-  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.mta-sts-primary.id, azurerm_cdn_frontdoor_origin.mta-sts-secondary.id]
+  cdn_frontdoor_origin_ids      = [azurerm_cdn_frontdoor_origin.mta-sts-primary.id]
+  #cdn_frontdoor_origin_ids     = [azurerm_cdn_frontdoor_origin.mta-sts-primary.id, azurerm_cdn_frontdoor_origin.mta-sts-secondary.id]
+
 
   supported_protocols             = ["Http", "Https"]
   patterns_to_match               = ["/*"]
