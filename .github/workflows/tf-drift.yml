@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "41 3 * * *" # runs nightly at 3:41 am
 
+defaults:
+  run:
+    working-directory: ./terraform
+
 #Special permissions required for OIDC authentication
 permissions:
   id-token: write
