@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'violet-virgo/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+    paths:
+      - 'violet-virgo/**'
 
 #Special permissions required for OIDC authentication
 permissions:
