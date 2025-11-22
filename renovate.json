@@ -18,13 +18,11 @@
 
     {
       "managers": ["terraform"],
-      "schedule": ["weekly"],
       "automerge": false
     },
 
     {
       "managers": ["npm"],
-      "schedule": ["daily"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },
