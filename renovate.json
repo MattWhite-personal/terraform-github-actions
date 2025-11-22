@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+
+  "dependencyDashboard": true,
+  "prHourlyLimit": 4,
+  "prConcurrentLimit": 8,
+
+  "labels": ["dependencies"],
+
+  "packageRules": [
+    {
+      "managers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+
+    {
+      "managers": ["terraform"],
+      "schedule": ["weekly"],
+      "automerge": false
+    },
+
+    {
+      "managers": ["npm"],
+      "schedule": ["daily"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "managers": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ]
+}
