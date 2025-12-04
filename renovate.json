@@ -3,51 +3,17 @@
   "extends": [
     "config:recommended"
   ],
-  "dependencyDashboard": true,
-  "prHourlyLimit": 4,
-  "prConcurrentLimit": 8,
-  "labels": [
-    "dependencies"
-  ],
   "assignees": [
     "MattWhite-personal"
   ],
   "packageRules": [
     {
       "matchManagers": [
+        "terraform",
+        "npm",
         "github-actions"
       ],
-      "automerge": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ]
-    },
-    {
-      "matchManagers": [
-        "terraform"
-      ],
-      "automerge": false
-    },
-    {
-      "matchManagers": [
-        "npm"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "automerge": true
-    },
-    {
-      "matchManagers": [
-        "npm"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "automerge": false
+      "rangeStrategy": "pin"
     }
   ]
 }
