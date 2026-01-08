@@ -11,7 +11,7 @@
   "dependencies": {
     "@astrojs/mdx": "4.3.13",
     "@astrojs/rss": "4.0.14",
-    "@astrojs/sitemap": "3.6.0",
+    "@astrojs/sitemap": "3.6.1",
     "astro": "5.16.6",
     "rehype-pretty-code": "0.14.1"
   }
