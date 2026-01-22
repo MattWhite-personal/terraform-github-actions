@@ -12,7 +12,7 @@
     "@astrojs/mdx": "4.3.13",
     "@astrojs/rss": "4.0.15",
     "@astrojs/sitemap": "3.7.0",
-    "astro": "5.16.13",
+    "astro": "5.16.14",
     "rehype-pretty-code": "0.14.1"
   }
 }
