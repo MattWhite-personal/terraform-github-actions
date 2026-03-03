@@ -13,6 +13,6 @@
     "@astrojs/rss": "4.0.15",
     "@astrojs/sitemap": "3.7.0",
     "astro": "5.18.0",
-    "rehype-pretty-code": "0.14.1"
+    "rehype-pretty-code": "0.14.3"
   }
 }
