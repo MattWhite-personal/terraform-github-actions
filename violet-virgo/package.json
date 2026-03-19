@@ -9,10 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "5.0.1",
+    "@astrojs/mdx": "5.0.2",
     "@astrojs/rss": "4.0.17",
     "@astrojs/sitemap": "3.7.1",
-    "astro": "6.0.5",
+    "astro": "6.0.7",
     "rehype-pretty-code": "0.14.3"
   }
 }
