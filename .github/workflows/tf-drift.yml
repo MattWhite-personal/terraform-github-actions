@@ -37,11 +37,11 @@ jobs:
     steps:
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       # Install the latest version of the Terraform CLI
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v4
+        uses: hashicorp/setup-terraform@5e8dbf3c6d9deaf4193ca7a8fb23f2ac83bb6c85 # v4
         with:
           terraform_wrapper: false
 
@@ -50,7 +50,7 @@ jobs:
         run: terraform init
       # Login to Azure CLI to support temporary runner IP allow-list
       - name: Setup Azure CLI
-        uses: azure/login@v3
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43 # v3
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -137,7 +137,7 @@ jobs:
 
       # Save plan to artifacts
       - name: Publish Terraform Plan
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: tfplan
           path: tfplan
@@ -169,7 +169,7 @@ jobs:
       # If changes are detected, create a new issue
       - name: Publish Drift Report
         if: steps.tf-plan.outputs.exitcode == 2
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           SUMMARY: "${{ steps.tf-plan-string.outputs.summary }}"
         with:
@@ -217,7 +217,7 @@ jobs:
       # If changes aren't detected, close any open drift issues
       - name: Publish Drift Report
         if: steps.tf-plan.outputs.exitcode == 0
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
