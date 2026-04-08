@@ -6,6 +6,12 @@
   "assignees": [
     "MattWhite-personal"
   ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": false
+  },
+  "osVulnerabilityAlerts": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "all",
   "packageRules": [
     {
       "description": "Wait 3 days for patch releases",
