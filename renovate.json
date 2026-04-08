@@ -12,7 +12,6 @@
   },
   "osvVulnerabilityAlerts": true,
   "dependencyDashboardOSVVulnerabilitySummary": "all",
-  "transitiveRemediation": true,
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 4am on monday"]
