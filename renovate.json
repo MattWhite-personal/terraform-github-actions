@@ -54,7 +54,7 @@
       "groupName": "Terrafrom AzureRM provder",
       "matchUpdateTypes": ["patch","minor"],
       "matchPackageNames": [
-        "/hashicorp/azurerm/"
+        "hashicorp/azurerm"
       ]
     },
     {
@@ -63,7 +63,7 @@
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true,
       "matchPackageNames": [
-        "/hashicorp/azurerm/"
+        "hashicorp/azurerm"
       ]
     },
     {
