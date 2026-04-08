@@ -34,8 +34,8 @@
       "groupName": "Astro Packages",
       "matchUpdateTypes": ["patch","minor"],
       "matchPackageNames": [
-        "/^astro/",
-        "/^@astrojs//"
+        "astro",
+        "@astrojs/*"
       ]
     },
     {
@@ -44,8 +44,8 @@
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true,
       "matchPackageNames": [
-        "/^astro/",
-        "/^@astrojs//"
+        "astro",
+        "@astrojs/*"
       ]
     },
     {
