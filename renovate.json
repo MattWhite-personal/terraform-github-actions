@@ -10,7 +10,7 @@
     "labels": ["security"],
     "automerge": false
   },
-  "osVulnerabilityAlerts": true,
+  "osvVulnerabilityAlerts": true,
   "dependencyDashboardOSVVulnerabilitySummary": "all",
   "packageRules": [
     {
