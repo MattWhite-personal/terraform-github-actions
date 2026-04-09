@@ -9,6 +9,8 @@ updates:
     directory: "/violet-virgo"
     schedule:
       interval: daily
+    cooldown:
+      default-days: 3
     assignees:
       - "MattWhite-personal"
     commit-message:
@@ -17,6 +19,8 @@ updates:
     directory: /
     schedule:
       interval: daily
+    cooldown:
+      default-days: 3
     assignees:
       - "MattWhite-personal"
     commit-message:
@@ -26,6 +30,8 @@ updates:
     schedule:
       interval: "daily"
       time: "15:00"
+    cooldown:
+      default-days: 7
     assignees:
       - "MattWhite-personal"
     commit-message:
