@@ -3,6 +3,7 @@
   "extends": [
     "config:recommended"
   ],
+  "timezone": "Europe/London",
   "assignees": [
     "MattWhite-personal"
   ],
@@ -12,6 +13,12 @@
   },
   "osvVulnerabilityAlerts": true,
   "dependencyDashboardOSVVulnerabilitySummary": "all",
+  "semanticCommits": "enabled",
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 7,
+  "minimumReleaseAgeBehaviour": "timestamp-required",
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 4am on monday"]
@@ -21,36 +28,31 @@
       "description": "Wait 3 days for patch releases",
       "matchUpdateTypes": ["patch"],
       "minimumReleaseAge": "3 days"
+      "semanticCommitType": "fix"
     },
     {
       "description": "Wait 7 days for minor releases",
       "matchUpdateTypes": ["minor"],
       "minimumReleaseAge": "7 days"
+      "semanticCommitType": "feat"
     },
     {
       "description": "Wait 30 days for major releases",
       "matchUpdateTypes": ["major"],
       "minimumReleaseAge": "30 days"
+      "semanticCommitType": "feat"
     },
     {
       "description": "Group Astro Updates together",
       "matchManagers": ["npm"],
       "groupName": "Astro Packages",
-      "matchUpdateTypes": ["patch","minor"],
-      "matchPackageNames": [
-        "astro",
-        "@astrojs/*"
-      ]
+      "matchUpdateTypes": ["patch","minor"]
     },
     {
       "description": "Require manual aproval - Astro major updates",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true,
-      "matchPackageNames": [
-        "astro",
-        "@astrojs/*"
-      ]
     },
     {
       "description": "Group AzureRM Terraform Updates",
@@ -106,12 +108,9 @@
       "pinDigests": true
     },
     {
-      "matchManagers": [
-        "terraform",
-        "npm",
-        "github-actions"
-      ],
-      "rangeStrategy": "pin"
+      "description": "Set npm strategy to bump",
+      "matchDatasources": ["npm"],
+      "rangeStrategy": "bump"
     }
   ]
 }
