@@ -43,25 +43,25 @@
       "semanticCommitType": "feat"
     },
     {
-      "description": "Group Astro Updates together",
+      "description": "Group npm Updates together",
       "matchManagers": ["npm"],
       "groupName": "Astro Packages",
       "matchUpdateTypes": ["patch","minor"]
     },
     {
-      "description": "Require manual approval - Astro major updates",
+      "description": "Require manual approval - npm major updates",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
     },
     {
-      "description": "Group AzureRM Terraform Updates",
+      "description": "Group Terraform Updates",
       "matchManagers": ["terraform"],
       "groupName": "Terraform AzureRM provider",
       "matchUpdateTypes": ["patch","minor"]
     },
     {
-      "description": "Require manual aproval - Terraform AzureRM Major Updates",
+      "description": "Require manual approval - Terraform Major Updates",
       "matchManagers": ["terraform"],
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
@@ -73,7 +73,7 @@
       "groupName": "Github Actions"
     },
     {
-      "description": "Require manual Approcal - Github Actions Major Updates",
+      "description": "Require manual Approval - Github Actions Major Updates",
       "matchManagers": ["github-actions"],
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
