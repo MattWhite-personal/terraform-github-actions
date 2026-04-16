@@ -27,19 +27,19 @@
     {
       "description": "Wait 3 days for patch releases",
       "matchUpdateTypes": ["patch"],
-      "minimumReleaseAge": "3 days"
+      "minimumReleaseAge": "3 days",
       "semanticCommitType": "fix"
     },
     {
       "description": "Wait 7 days for minor releases",
       "matchUpdateTypes": ["minor"],
-      "minimumReleaseAge": "7 days"
+      "minimumReleaseAge": "7 days",
       "semanticCommitType": "feat"
     },
     {
       "description": "Wait 30 days for major releases",
       "matchUpdateTypes": ["major"],
-      "minimumReleaseAge": "30 days"
+      "minimumReleaseAge": "30 days",
       "semanticCommitType": "feat"
     },
     {
@@ -49,46 +49,22 @@
       "matchUpdateTypes": ["patch","minor"]
     },
     {
-      "description": "Require manual aproval - Astro major updates",
+      "description": "Require manual approval - Astro major updates",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true,
+      "dependencyDashboardApproval": true
     },
     {
       "description": "Group AzureRM Terraform Updates",
       "matchManagers": ["terraform"],
-      "groupName": "Terraform AzureRM provder",
-      "matchUpdateTypes": ["patch","minor"],
-      "matchPackageNames": [
-        "hashicorp/azurerm"
-      ]
+      "groupName": "Terraform AzureRM provider",
+      "matchUpdateTypes": ["patch","minor"]
     },
     {
       "description": "Require manual aproval - Terraform AzureRM Major Updates",
       "matchManagers": ["terraform"],
       "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true,
-      "matchPackageNames": [
-        "hashicorp/azurerm"
-      ]
-    },
-    {
-      "description": "Group AzureAD Terraform Updates",
-      "matchManagers": ["terraform"],
-      "groupName": "Terraform AzureAD provder",
-      "matchUpdateTypes": ["patch","minor"],
-      "matchPackageNames": [
-        "hashicorp/azuread"
-      ]
-    },
-    {
-      "description": "Require manual aproval - Terraform AzureAD Major Updates",
-      "matchManagers": ["terraform"],
-      "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true,
-      "matchPackageNames": [
-        "hashicorp/azuread"
-      ]
+      "dependencyDashboardApproval": true
     },
     {
       "description": "Group GitHub Actions",
