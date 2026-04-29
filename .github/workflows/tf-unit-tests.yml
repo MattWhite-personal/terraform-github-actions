@@ -49,7 +49,7 @@ jobs:
       # Perform a security scan of the terraform code using checkov
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@3203f966a7ccd680cd8f6aaa3c3c5b0b3e9afa32 # master
+        uses: bridgecrewio/checkov-action@20fb358293b0af0188f25cf7658b69d49ec12c9a # master
         with:
           framework: terraform
           soft_fail: true
@@ -122,7 +122,7 @@ jobs:
       - name: Run Checkov action
         if: steps.fmt_check.outcome == 'success'
         id: checkov
-        uses: bridgecrewio/checkov-action@3203f966a7ccd680cd8f6aaa3c3c5b0b3e9afa32 # master
+        uses: bridgecrewio/checkov-action@20fb358293b0af0188f25cf7658b69d49ec12c9a # master
         with:
           framework: terraform
           soft_fail: true
