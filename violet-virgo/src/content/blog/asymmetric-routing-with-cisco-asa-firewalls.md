@@ -7,7 +7,6 @@ tags:
   - "asa"
   - "cisco"
   - "routing"
-  - "tcp-syn"
 heroImage: "/blog-network-header.png"
 description: "short technote that describes how to ensure that traffic routing across an ASA Series Cisco firewall is not routed asymetrically"
 ---
