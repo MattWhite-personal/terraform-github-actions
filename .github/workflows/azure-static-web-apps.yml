@@ -47,6 +47,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "./violet-virgo/dist"
+          config_file_location: "./violet-virgo"
           skip_app_build: true
 
   close_pull_request_job:
