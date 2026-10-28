@@ -29,19 +29,26 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Build And Deploy
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: violet-virgo/.nvmrc
+          cache: npm
+          cache-dependency-path: violet-virgo/package-lock.json
+      - name: Build
+        working-directory: violet-virgo
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@1a947af9992250f3bc2e68ad0754c0b0c11566c9 # v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.DEPLOYMENT_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "./violet-virgo" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "/dist" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          app_location: "./violet-virgo/dist"
+          config_file_location: "./violet-virgo"
+          skip_app_build: true
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
