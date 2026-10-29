@@ -7,39 +7,36 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/violet-virgo"
+    open-pull-requests-limit: 0
     schedule:
       interval: "weekly"
       day: "saturday"
       time: "05:00"
       timezone: "Europe/London"
-    cooldown:
-      default-days: 3
     assignees:
       - "MattWhite-personal"
     commit-message:
       prefix: ":dependabot: "
-  - package-ecosystem: github-actions
-    directory: /
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    open-pull-requests-limit: 0
     schedule:
       interval: "weekly"
       day: "saturday"
       time: "05:00"
       timezone: "Europe/London"
-    cooldown:
-      default-days: 3
     assignees:
       - "MattWhite-personal"
     commit-message:
       prefix: ":dependabot: "
   - package-ecosystem: "terraform"
     directory: "/terraform"
+    open-pull-requests-limit: 0
     schedule:
       interval: "weekly"
       day: "saturday"
       time: "05:00"
       timezone: "Europe/London"
-    cooldown:
-      default-days: 7
     assignees:
       - "MattWhite-personal"
     commit-message:
