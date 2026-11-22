@@ -117,34 +117,50 @@ Your storage account needs to be set up so that Entra ID is the only way in:
 
 The original script used a WPF window to sign in, which is blocked in constrained language and, to be honest, never looked great. On an Entra joined device we can do much better by using the **Web Account Manager (WAM)**, the Windows broker that already holds the user's primary refresh token. With WAM the user gets single sign-on with no pop-up at all and falls back to a native Windows sign-in prompt only if they need to interact.
 
-Azure PowerShell's `Az.Accounts` module uses WAM by default on Windows, so rather than hand rolling the OAuth flow I've replaced my copy of Lee's code with it. Install `Az.Accounts` on the endpoints (I include this in the installer package or deploy it as a Win32 app) and sign in with:
+Rather than installing a module, I call the WAM API that ships in Windows itself. It is a WinRT API (`Windows.Security.Authentication.Web.Core`) that PowerShell 5.1 can load directly, so there is nothing to install, version or patch on the endpoints. The only wrinkle is that the WinRT calls are asynchronous, so a small helper waits for them to complete:
 
 ```powershell
-Import-Module Az.Accounts
+Add-Type -AssemblyName System.Runtime.WindowsRuntime
 
-Connect-AzAccount -AuthScope "https://storage.azure.com" -ErrorAction Stop | Out-Null
+$asTask = ([System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {
+    $_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and
+    $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncOperation`1' })[0]
+
+function Wait-WinRT {
+    param($Operation, [Type]$ResultType)
+    $task = $asTask.MakeGenericMethod($ResultType).Invoke($null, @($Operation))
+    $task.Wait(-1) | Out-Null
+    $task.Result
+}
 ```
 
-Newer versions of the module return the access token as a `SecureString`, older ones return a plain string, so a small helper handles both. I then get one token for Graph and one for storage:
+With that in place, asking WAM for a token silently, using the primary refresh token the device already holds, looks like this:
 
 ```powershell
+$null = [Windows.Security.Authentication.Web.Core.WebAuthenticationCoreManager, Windows.Security.Authentication.Web.Core, ContentType = WindowsRuntime]
+$null = [Windows.Security.Credentials.WebAccountProvider, Windows.Security.Credentials, ContentType = WindowsRuntime]
+
 function Get-AccessToken {
     param([string]$ResourceUrl)
 
-    $token = (Get-AzAccessToken -ResourceUrl $ResourceUrl -ErrorAction Stop).Token
-    if ($token -is [System.Security.SecureString]) {
-        $token = [System.Net.NetworkCredential]::new('', $token).Password
+    $provider = Wait-WinRT ([Windows.Security.Authentication.Web.Core.WebAuthenticationCoreManager]::FindAccountProviderAsync("https://login.windows.local", "organizations")) ([Windows.Security.Credentials.WebAccountProvider])
+    $request  = [Windows.Security.Authentication.Web.Core.WebTokenRequest]::new($provider, "", $clientId)
+    $request.Properties.Add("resource", $ResourceUrl)
+
+    $result = Wait-WinRT ([Windows.Security.Authentication.Web.Core.WebAuthenticationCoreManager]::GetTokenSilentlyAsync($request)) ([Windows.Security.Authentication.Web.Core.WebTokenRequestResult])
+    if ($result.ResponseStatus -ne 'Success') {
+        throw "WAM token request for $ResourceUrl failed: $($result.ResponseStatus)"
     }
-    $token
+    $result.ResponseData[0].Token
 }
 
 $graphToken   = Get-AccessToken -ResourceUrl "https://graph.microsoft.com"
 $storageToken = Get-AccessToken -ResourceUrl "https://storage.azure.com"
 ```
 
-If you would rather keep using your own app registration from the original post, the same approach works with MSAL.NET and the WAM broker package, you just need to supply your client ID and the delegated permissions for Graph and Azure Storage (**user_impersonation**) with admin consent granted.
+`$clientId` is the app registration from the original post, which still needs the delegated Graph permissions and Azure Storage (**user_impersonation**) with admin consent granted. Because the script is signed and runs in full language mode, the reflection used by the helper is allowed. If the silent request fails (for example the user isn't on an Entra joined device), you can fall back to the browser or WPF sign-in from the original post.
 
-<!-- IMAGE PLACEHOLDER: Existing app registration API permissions showing Azure Storage user_impersonation and Microsoft Graph permissions with admin consent (only needed if using your own app registration) -->
+<!-- IMAGE PLACEHOLDER: Existing app registration API permissions showing Azure Storage user_impersonation and Microsoft Graph permissions with admin consent -->
 
 ### Getting the groups, all of them
 
